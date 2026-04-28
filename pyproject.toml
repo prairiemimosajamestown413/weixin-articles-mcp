@@ -43,9 +43,9 @@ dev = [
 weixin-articles-mcp = "weixin_articles_mcp.server:main"
 
 [project.urls]
-# To be filled in once the GitHub repo is created.
-# Homepage = "https://github.com/<your-username>/weixin-articles-mcp"
-# Issues = "https://github.com/<your-username>/weixin-articles-mcp/issues"
+Homepage = "https://github.com/jj-cheng25/weixin-articles-mcp"
+Issues = "https://github.com/jj-cheng25/weixin-articles-mcp/issues"
+Repository = "https://github.com/jj-cheng25/weixin-articles-mcp"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/weixin_articles_mcp"]

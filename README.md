@@ -4,6 +4,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
+[![GitHub stars](https://img.shields.io/github/stars/jj-cheng25/weixin-articles-mcp?style=social)](https://github.com/jj-cheng25/weixin-articles-mcp)
 
 ## Why this exists
 
@@ -105,6 +106,8 @@ PRs welcome. Particularly looking for help on:
 - WeChat Channels (视频号) URL handling
 - Resilience to template variants from less common publishers
 - More test fixtures (different article styles)
+
+Open an issue: https://github.com/jj-cheng25/weixin-articles-mcp/issues
 
 ## License
 
