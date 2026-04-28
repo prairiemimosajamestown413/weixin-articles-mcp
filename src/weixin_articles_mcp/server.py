@@ -24,6 +24,7 @@ from fastmcp import FastMCP
 from .fetcher import FetchError, fetch_html
 from .media import (
     download_images,
+    enrich_videosnap_metadata,
     extract_video_keyframes,
     filter_image_urls,
 )
@@ -70,6 +71,12 @@ async def _read_article_impl(url: str) -> list[Any]:
         f"parsed: title={article.title!r} "
         f"images={len(article.image_urls)} videos={len(article.videos)}"
     )
+
+    # WeChat Channels (mp-common-videosnap) videos: enrich with API metadata
+    # before any keyframe processing, so the per-video info text can include
+    # duration / dimensions / hi-res cover.
+    if any(v.kind == "wxv-snap" for v in article.videos):
+        await enrich_videosnap_metadata(article)
 
     blocks: list[Any] = [_render_text_block(article)]
 

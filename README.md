@@ -22,7 +22,10 @@ This server returns **the images themselves**. And the **video keyframes**. Your
 
 - 📰 **Reliable WeChat scraping** — pure Python `httpx` GET, no Rust binary or headless browser required
 - 🖼️ **Native image content** — PNG/JPG returned as MCP `Image` blocks, GIFs filtered, capped at 10 per article
-- 🎬 **Video keyframe extraction** — Tencent Video embeds downloaded with `yt-dlp`, 8 evenly-spaced frames extracted with `ffmpeg`, returned as image blocks
+- 🎬 **Video handling for all three embed types**:
+  - **WeChat Official Account native videos** (`<iframe data-mpvid="wxv_*">`): mp4 extracted from inline JS, 8 evenly-spaced keyframes via ffmpeg
+  - **Tencent Video** (`v.qq.com` iframes): yt-dlp + ffmpeg keyframes
+  - **WeChat Channels** (视频号, `<mp-common-videosnap>`): full metadata via the public `batch_get_video_snap` API (duration, dimensions, hi-res cover, full description, like count, publisher verification) + cover image. *mp4 stream is locked behind WeChat's finder protocol — see [Why no Channels mp4?](#why-no-channels-mp4) below*
 - 🕒 **Publish time recovery** — extracts `var ct` Unix timestamp that other parsers miss
 - 🪶 **Minimal install** — `pip install` + optional `ffmpeg` for video; no Chromium, no Rust
 
@@ -74,8 +77,10 @@ Your LLM will receive:
 Returns a list of MCP content blocks:
 
 - `[0]` — text block: metadata + article body markdown
-- `[1..N]` — image blocks: article images (max 10)
-- For each video (max 3): one text marker + 8 keyframe image blocks
+- `[1..N]` — image blocks: article images (max 10, GIFs filtered)
+- For each video (max 3):
+  - **WeChat-native or Tencent**: one text marker + 8 keyframe image blocks
+  - **WeChat Channels**: one text marker (with duration, dimensions, like count, publisher, description) + 1 hi-res cover image block
 
 On failure, returns a single text block starting with `Error:`.
 
@@ -83,11 +88,22 @@ On failure, returns a single text block starting with `Error:`.
 
 - [x] WeChat article fetching with anti-bot handling
 - [x] Native image content blocks
+- [x] WeChat Official Account native video keyframe extraction
 - [x] Tencent Video keyframe extraction
-- [ ] WeChat Channels (视频号) video support
-- [ ] ASR subtitles via faster-whisper
+- [x] WeChat Channels (视频号) metadata enrichment via public API
+- [ ] ASR subtitles via faster-whisper (for native + Tencent videos)
 - [ ] Full-text search across read articles
 - [ ] Account subscription / new-article notifications
+
+### Why no Channels mp4?
+
+Short answer: WeChat Channels (视频号) videos in articles intentionally don't expose a downloadable mp4 stream to public web access. The mp4 lives inside WeChat's finder protocol, which requires (a) a logged-in WeChat client session, (b) finder-specific encryption (the first 128KB of the mp4 is XOR-encrypted with a fixed key), and (c) intercepting the stream from the WeChat PC client at network level.
+
+Every open-source WeChat Channels downloader in the wild — [ltaoo/wx_channels_download](https://github.com/ltaoo/wx_channels_download), [qiye45/wechatVideoDownload](https://github.com/qiye45/wechatVideoDownload), [putyy/res-downloader](https://github.com/putyy/res-downloader), [KingsleyYau/WeChatChannelsDownloader](https://github.com/KingsleyYau/WeChatChannelsDownloader) and others — solves this with a **MITM HTTPS proxy + WeChat PC client + root CA installation**. That model is fundamentally incompatible with how an MCP server runs (no client, no user interaction, no admin install).
+
+What we do instead: call WeChat's public `batch_get_video_snap` API (no cookie or session required) to give your LLM the next-best thing — high-resolution cover image, full description, duration, dimensions, like count, and publisher verification. For most use cases (reading and summarizing articles), this is enough to convey the video's substance.
+
+If you specifically need the mp4 file, install one of the dedicated tools above alongside this MCP — they complement each other.
 
 ## Architecture
 
