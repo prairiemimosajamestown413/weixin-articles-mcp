@@ -27,3 +27,4 @@ Thumbs.db
 # Project artifacts
 /tmp/
 *.log
+dist/

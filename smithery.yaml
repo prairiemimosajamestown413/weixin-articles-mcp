@@ -1,0 +1,19 @@
+# Smithery configuration
+# https://smithery.ai/docs/config#smitheryyaml
+#
+# This config takes effect once weixin-articles-mcp is published to PyPI;
+# until then, smithery installs may fail to resolve the package.
+# Note: video keyframe extraction also requires `ffmpeg` available on the
+# system PATH (brew install ffmpeg / apt install ffmpeg).
+
+startCommand:
+  type: stdio
+  configSchema:
+    type: object
+    properties: {}
+  commandFunction:
+    |-
+    config => ({
+      command: 'uvx',
+      args: ['--from', 'weixin-articles-mcp[video]', 'weixin-articles-mcp']
+    })
