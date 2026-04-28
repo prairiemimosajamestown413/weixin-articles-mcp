@@ -88,7 +88,10 @@ async def _read_article_impl(url: str) -> list[Any]:
     return blocks
 
 
-@mcp.tool()
+# output_schema=None: this tool returns a heterogeneous list of MCP content
+# blocks (text + image), not structured data. Without this, FastMCP would try
+# to validate the return against an inferred schema and fail.
+@mcp.tool(output_schema=None)
 async def read_article(url: str) -> list:
     """
     Read a WeChat Official Account article (mp.weixin.qq.com/s/...) and
