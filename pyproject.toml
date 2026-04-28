@@ -1,0 +1,51 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "weixin-articles-mcp"
+version = "0.1.0"
+description = "MCP server for reading WeChat (微信) Official Account articles, with native multimodal output (images + video keyframes)."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+keywords = ["mcp", "wechat", "weixin", "公众号", "claude", "llm", "multimodal"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = [
+    "fastmcp>=2.0",
+    "httpx>=0.27",
+    "beautifulsoup4>=4.12",
+    "lxml>=5.0",
+    "markdownify>=0.13",
+]
+
+[project.optional-dependencies]
+video = [
+    # yt-dlp and ffmpeg are required for video keyframe extraction.
+    # ffmpeg must be installed at the system level (e.g. `brew install ffmpeg`).
+    "yt-dlp>=2024.1",
+]
+dev = [
+    "pytest>=7.4",
+    "pytest-asyncio>=0.23",
+]
+
+[project.scripts]
+weixin-articles-mcp = "weixin_articles_mcp.server:main"
+
+[project.urls]
+# To be filled in once the GitHub repo is created.
+# Homepage = "https://github.com/<your-username>/weixin-articles-mcp"
+# Issues = "https://github.com/<your-username>/weixin-articles-mcp/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/weixin_articles_mcp"]
