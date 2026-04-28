@@ -1,6 +1,8 @@
 # weixin-articles-mcp
 
 > MCP server for reading **WeChat (微信) Official Account articles**, with native multimodal output — images and video keyframes returned as content blocks, not URLs.
+>
+> **For personal/research use.** This tool reads only publicly accessible article URLs and does not bypass any authentication or anti-bot measures. See [Disclaimer](#disclaimer) before using.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
@@ -124,6 +126,28 @@ PRs welcome. Particularly looking for help on:
 - More test fixtures (different article styles)
 
 Open an issue: https://github.com/jj-cheng25/weixin-articles-mcp/issues
+
+## Disclaimer
+
+This tool is provided for **personal, educational, and research use only**.
+
+What this tool does:
+- Reads publicly accessible WeChat article URLs (`mp.weixin.qq.com/s/...`) using a standard browser User-Agent — the same content any user with a web browser can view
+- Calls only public WeChat API endpoints that accept empty authentication fields (i.e. designed by WeChat to be reachable without login)
+- Enforces a default 1-second minimum interval between requests to prevent the tool from being repurposed as a high-volume crawler
+
+What this tool **does not** do:
+- Use cookies, login sessions, or any form of user credential
+- Bypass any technical protection, anti-bot measure, or encrypted stream (e.g. WeChat Channels mp4 is intentionally **not** supported — see [Why no Channels mp4?](#why-no-channels-mp4))
+- Decrypt, reverse-engineer, or circumvent WeChat's protocol-level protections
+- Store, cache, or redistribute fetched content beyond the immediate response
+
+User responsibilities:
+- **Respect WeChat's Terms of Service** when using this tool. Personal/research use of publicly accessible articles is generally aligned with how the content is intended to be consumed; high-volume scraping or commercial redistribution likely is not.
+- **Respect copyright** of fetched content. Article content remains the property of its original authors and publishers; this tool only fetches and forwards it to your LLM for inline processing.
+- **Do not flood mp.weixin.qq.com** — keep usage at human reading rates. The default rate limit is set conservatively, but you can tighten it further by setting `WEIXIN_FETCH_INTERVAL_S=2.0` (or higher) in your environment.
+
+The authors and contributors of this project disclaim all liability arising from misuse. By using this software you accept full responsibility for ensuring your usage complies with applicable laws and the terms of service of the services it connects to.
 
 ## License
 
