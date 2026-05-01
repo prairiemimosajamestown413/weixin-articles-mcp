@@ -105,7 +105,22 @@ Every open-source WeChat Channels downloader in the wild — [ltaoo/wx_channels_
 
 What we do instead: call WeChat's public `batch_get_video_snap` API (no cookie or session required) to give your LLM the next-best thing — high-resolution cover image, full description, duration, dimensions, like count, and publisher verification. For most use cases (reading and summarizing articles), this is enough to convey the video's substance.
 
-If you specifically need the mp4 file, install one of the dedicated tools above alongside this MCP — they complement each other.
+#### Pairing with wx_channels_download for full Channels mp4
+
+If your workflow really needs the mp4 file (archiving, transcoding, frame-perfect inspection), pair this MCP with [wx_channels_download](https://github.com/ltaoo/wx_channels_download), the most active open-source Channels downloader:
+
+| Tool | Role |
+|---|---|
+| **weixin-articles-mcp** (this) | LLM reads article body + images + native/Tencent video keyframes + Channels metadata (cover, duration, description) |
+| **wx_channels_download** | You download the actual Channels mp4 by playing it in WeChat PC client (MITM proxy intercepts the stream) |
+
+Suggested flow:
+
+1. Ask your LLM to read the article via this MCP. It surfaces which Channels videos are embedded, their durations, descriptions, and covers.
+2. Based on that summary, decide whether you want the raw mp4.
+3. If yes, open the article in WeChat PC client with `wx_channels_download` running, hit play, click its injected download button.
+
+This division keeps the MCP itself zero-side-effects (only reads public URLs, no MITM, no client) while still giving you a path to the full mp4 when you actually need it.
 
 ## Architecture
 
